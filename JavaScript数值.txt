@@ -1,0 +1,71 @@
+数值范围及精度
+JavaScript中所有数字都是以64位浮点数形式存储, 在某些情况下会将64位浮点数自动转为32位
+
+JavaScript中采用IEEE754存储
+第一个位为符号位
+2-12位位指数部分(11位)
+13-64位为小数部分也是有效数字部分(52位)
+
+由于指数部分有11位则JavaScript表示的范围为2^1024到2^-1023(开区间)
+当大于2^1024(正向溢出) 返回Infinity, 反之(负向溢出)返回0
+
+Number.MAX_VALUE=1.7976931348623157e+308 表示最大值
+Number.MIN_VALUE=5e-324表示最小值
+
+当数字的整数部分多余21位时, 或小数点后的0>=6个时采用科学计数法
+
+由于IEEE的表示法, +0和-0的表示也不相同,但是他们等价
+区别: 1/+0 返回+Infinity, 1/-0返回-Infinity
+
+NaN和Infinity
+NaN的数据类型位Number, 但是它表示非数值not a number.  
+typeof NaN  返回Number
+任何涉及NaN的运算都返回NaN
+NaN不等于NaN
+0/0位NaN
+
+Infinity表示无穷, +Infinity和-Infinity分别表示正无穷和负无穷
+1/0 返回+Infinity
+1/-0 返回-Infinity
+Infinity和NaN比较返回false
+0*Infinity返回NaN
+
+5 * Infinity // Infinity
+5 - Infinity // -Infinity
+Infinity / 5 // Infinity
+5 / Infinity // 0
+
+0 * Infinity // NaN
+0 / Infinity // 0
+Infinity / 0 // Infinity
+
+Infinity + Infinity // Infinity
+Infinity * Infinity // Infinity
+
+Infinity - Infinity // NaN
+Infinity / Infinity // NaN
+
+可以看成Infinity和0计算
+null * Infinity // NaN
+null / Infinity // 0
+Infinity / null // Infinity
+
+undefined + Infinity // NaN
+undefined - Infinity // NaN
+undefined * Infinity // NaN
+undefined / Infinity // NaN
+Infinity / undefined // NaN
+
+isNaN()用于判断一个值是否是NaN, 是则返回true
+当传入非数值时, 将字符串先转换成NaN, 则判断
+传入空数组或只有一个数值成员的数组时, 返回false
+
+
+数值转换
+parseInt()只会返回一个十进制数或者NaN
+parseInt()可接受第二个参数,表示基数(取值为2-36), 基数为几待转换值(第一个参数)就被视为是几进制
+基数若超出返回则自动转为NaN
+基数若是0, undefined, null则忽略基数参数
+
+isFinite()返回布尔值, 表示某个值是否位正常的数值
+isFinite()对+-Infinity, NaN, undefined返回false, 其他都返回true

@@ -1,0 +1,154 @@
+EventTarget接口
+DOM事件的操作都定义在EventTarget接口. 有三个实例方法我们常用到:
+EventTarget.addEventListener()
+EventTarget.removeEventListener()
+EventTarget.dispatchEvent
+
+addEventListener()作用于当前对象并绑定一个事件监听函数. 一旦事件发生则触发函数. 没有返回值
+监听函数接受三个参数, 分别是事件类型, 监听函数, 和布尔值(可选). 布尔值表示在捕获阶段还是冒泡阶段执行监听函数, 默认为false在猫婆阶段触发监听函数.
+监听函数内部的this指向当前事件所在的那个对象
+// HTML 代码如下
+// <p id="para">Hello</p>
+var para = document.getElementById('para');
+para.addEventListener('click', function (e) {
+  console.log(this.nodeName); // "P"
+}, false);
+
+removeEventListener()用来移除监听事件, 他没有返回值
+removeEventListener()作用的对象和参数必须和addEventListener()的一样, 否则无效. 常范错误的就是后两个参数
+removeEventListener()无法取消通过addEventListener()方法添加的匿名监听函数
+
+dispatchEvent()在当前节点触发指定事件, 参数为Event对象的实例.当监听函数调用了Event.preventDefault()时返回false, 否则返回true
+para.addEventListener('click', hello, false);
+var event = new Event('click');
+para.dispatchEvent(event);
+
+若dispatchEvent()传入的参数为空或不是有效的事件对象则报错
+
+监听函数
+JavaScript中有三种方法可以绑定监听函数
+HTML的on+事件名
+在html标签的属性中添加click事件
+<div onclick="alert(1)"> </div>
+需要注意的是, onclick的值为要执行的代码, 而不是函数. 且它只在冒泡阶段发生
+<!-- 正确 -->
+<body onload="doSomething()">
+<!-- 错误 -->
+<body onload="doSomething">
+它的缺点是违反了html和JavaScript分离的原则
+
+el.onclick
+在元素节点上添加onclick属性, 但是这个属性值是函数. 它也在冒泡阶段发生
+//不能是doSomething(), doSomething()表示函数的执行, doSomething表示函数
+window.onload = doSomething;
+div.onclick = function (event) {
+  console.log('触发事件');
+};
+这个方法的缺点就是只可以为同一元素添加一个onclick事件, 若定义两次, 则后面的会覆盖前面的.
+
+Event.addEventListener()
+我们最长使用这个方法添加事件. 它既可以添加多个同类型的监听事件, 也能控制实在捕获阶段还是冒泡阶段发生
+
+
+this的指向
+监听函内部的this指向触发事件的那个元素节点
+三种写法如下:
+//写法一
+<button id="btn" onclick="console.log(this.id)">点击</button>
+
+var btn = document.getElementById('btn');
+
+// 写法二
+btn.onclick = function () {
+  console.log(this.id);
+};
+
+// 写法三
+btn.addEventListener(
+  'click',
+  function (e) {
+    console.log(this.id);
+  },
+  false
+);
+
+事件传播
+事件的是通过事件流进行传播的, 事件流分为三个阶段: 捕获阶段, 目标阶段, 冒泡阶段. 
+addEventListener()的第三个参数就是设置这个的. 当第三个参数为false(默认)时为冒泡阶段, 为true时为捕获阶段
+捕获阶段: 从window(最上层)对象沿着子节点传递到目标节点. 它是从上到下的.
+目标阶段: 目标节点正在触发监听函数
+冒泡阶段: 从目标节点沿着父节点传递到window对象.
+
+
+事件代理
+通过事件的捕获和冒泡阶段可以为元素的父节点添加事件, 那样就不用为其子节点都添加一个事件了. 这就叫事件代理.
+若希望事件在某个节点阻止其传播, 可以在监听函数的事件对象上调用其stopPropagation()方法阻止事件传播.
+// 事件传播到 p 元素后，就不再向下传播了
+p.addEventListener('click', function (event) {
+  event.stopPropagation();
+}, true);
+
+// 事件冒泡到 p 元素后，就不再向上冒泡了
+p.addEventListener('click', function (event) {
+  event.stopPropagation();
+}, false);
+但是这种方法不会阻止在该节点上定义的其他监听函数, 它只是阻止了事件的传播.
+p.addEventListener('click', function (event) {
+  event.stopPropagation();
+  console.log(1);
+});
+
+p.addEventListener('click', function(event) {
+  // 会触发
+  console.log(2);
+});
+stopImmediatePropagation()会彻底阻止事件, 也不会触发节点在调用后面的监听函数
+
+p.addEventListener('click', function (event) {
+  event.stopImmediatePropagation();
+  console.log(1);
+});
+
+p.addEventListener('click', function(event) {
+  // 不会被触发
+  console.log(2);
+});
+
+Event对象
+属性
+事件发生后会产生一个事件对象, 可以将它作为参数传给监听函数
+浏览器的有一个原生Event对象, 所有的事件都是这个事件的实例. 
+可以通过Event()来构造一个实例.它接收两个参数, 第一个是字符串参数表示事件名.第二个参数为对象, 为对事件对象的配置. 
+第二个参数对象主要有两个属性:
+bubbles：布尔值，可选，默认为false，表示事件对象是否冒泡。
+cancelable：布尔值，可选，默认为false，表示事件是否可以被取消，即能否用Event.preventDefault()取消这个事件。一旦事件被取消，就好像从来没有发生过，不会触发浏览器对该事件的默认行为。
+
+Event.bubbles返回一个布尔值, 表示当前对象事件是否会冒泡. 只读属性.
+Event.eventPhase返回数值常量, 表示事件所在的阶段. 它有四个值:
+0，事件目前没有发生。
+1，事件目前处于捕获阶段，即处于从祖先节点向目标节点的传播过程中。
+2，事件到达目标节点，即Event.target属性指向的那个节点。
+3，事件处于冒泡阶段，即处于从目标节点向祖先节点的反向传播过程中。
+
+Event.cancelable属性返回一个布尔值，表示事件是否可以取消。该属性为只读属性.
+Event.cancelBubble属性是一个布尔值，如果设为true，相当于执行Event.stopPropagation()，可以阻止事件的传播。
+Event.defaultPrevented属性返回一个布尔值，表示该事件是否调用过.
+Event.preventDefault方法。该属性只读
+Event.currentTarget属性返回事件当前所在的节点，即正在执行的监听函数所绑定的那个节点。
+Event.target属性返回原始触发事件的那个节点，即事件最初发生的节点
+Event.type属性返回一个字符串，表示事件类型。事件的类型是在生成事件的时候。该属性只读。
+Event.timeStamp属性返回一个毫秒时间戳，表示事件发生的时间。它是相对于网页加载成功开始计算的。
+Event.isTrusted属性返回一个布尔值，表示该事件是否由真实的用户行为产生。比如，用户点击链接会产生一个click事件，该事件是用户产生的；Event构造函数生成的事件，则是脚本产生的。
+Event.detail属性只有浏览器的 UI （用户界面）事件才具有。该属性返回一个数值，表示事件的某种信息。具体含义与事件类型相关。比如，对于click和dbclick事件，Event.detail是鼠标按下的次数（1表示单击，2表示双击，3表示三击）；对于鼠标滚轮事件，Event.detail是滚轮正向滚动的距离，负值就是负向滚动的距离，返回值总是3的倍数。
+
+方法
+Event.preventDefault方法取消浏览器对当前事件的默认行为
+stopPropagation方法阻止事件在 DOM 中继续传播，防止再触发定义在别的节点上的监听函数，但是不包括在当前节点上其他的事件监听函数
+Event.stopImmediatePropagation方法阻止同一个事件的其他监听函数被调用，不管监听函数定义在当前节点还是其他节点。也就是说，该方法阻止事件的传播，比Event.stopPropagation()更彻底。
+Event.composedPath()返回一个数组，成员是事件的最底层节点和依次冒泡经过的所有上层节点。
+
+CustomEvent接口
+CustomEvent 接口用于生成自定义的事件实例. 若想要在触发事件的同时传入数据, 则可以使用这个接口.
+浏览器提供了CustomEvent()构造函数生成实例. 
+CustomEvent()构造函数接受两个参数。第一个参数是字符串，表示事件的名字，这是必须的。第二个参数是事件的配置对象，这个参数是可选的。CustomEvent的配置对象除了接受 Event 事件的配置属性，只有一个自己的属性detail,表示事件附带的数据, 默认为null.
+

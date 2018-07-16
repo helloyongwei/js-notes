@@ -1,0 +1,18 @@
+Error实例对象
+ES标准中Error实例对象必须有message属性，表示出错时的提示信息
+（非ES标准属性）大多数JavaScript引擎对Error实例提供name和stack属性， 分别表示错误的名称和错误的堆栈
+
+原生错误类型
+JavaScript定义了6中错误对象：SyntaxError， ReferenceError， RangeError， TypeError， URIError，EvalError
+SyntaxError： 语法错误
+ReferenceError：引用一个不存在的变量时发生的错误
+RangeError：一个值超出了有效范围时发生的错误
+主要有：数组长度为负数， Number对象的参数超出范围， 函数堆栈超过最大值
+TypeError：变量或参数不是预期类型时发生的错误
+如：字符串， 布尔值等使用new命令
+URIError：URI相关函数的参数不正确时抛出的错误
+主要涉及encodeURI()、decodeURI()、encodeURIComponent()、decodeURIComponent()、escape()和unescape()这六个函数
+EvalError： eval函数没有被正确执行时发生的错误（已不再使用， 保留是为了与遗留代码兼容）
+
+try...catch...finally语句可以用来处理错误
+当try代码块中出现错误时停止执行后面的代码， catch代码块会捕获错误， 我们通常在catch中处理捕获的错误， finally用来处理最后的动作， finally代码块中的代码不管有没有错都会执行。

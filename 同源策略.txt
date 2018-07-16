@@ -1,0 +1,26 @@
+同源是指: 协议相同, 域名相同, 端口相同. 若其中一项不同则成为非同源
+
+非同源的三种行为收到限制:
+Cookie, Localstorage, IndexDB无法读取
+DOM无法获得
+AJAX请求不能发送
+
+如何规避:
+Cookie
+两个网页一级域名相同,二级域名不同, 可以通过设置相同的document.domain共享Cookie.
+注意: 这种方法只适用于Cookie和iframe窗口.
+
+iframe
+若父窗口和子窗口不同源则父窗口无法和子窗口通信
+假如, 父子窗口的一级域名相同, 二级域名不同则可以通过document.domian来设置
+对于完全不同源的网站, 通过三种方法解决跨域问题
+片段识别符
+window.name, 优点: window.name容量大, 缺点: 必须监听子窗口的window.name变化,影响网页性能
+跨文档通信API, window.postMessage无论窗口是否同源都允许跨窗口通信
+
+AJAX
+同源策略规定AJAX智能发送给同源的网址. 有三种方法规避:
+JSONP
+WebSocket, 不实行同源策略, 只要服务器支持就可以垮源通信
+CORS, 跨域资源共享
+

@@ -1,0 +1,150 @@
+XMLHttpRequest对象
+XMLHttpRequest对象用于在浏览器和服务器之间传递数据
+我们使用其构造函数创建XMLHttpRequest对象
+var ajax = new XMLHttpRequest();
+
+XMLHttpRequest对象通过onreadystatechange属性指定回调函数, 则回调函数中监听readyState属性以便进一步动作. 
+XMLHttpRequest对象常用用法
+var xhr = new XMLHttpRequest();
+
+// 指定通信过程中状态改变时的回调函数
+xhr.onreadystatechange = function(){
+  // 通信成功时，状态值为4
+  if (xhr.readyState === 4){
+    if (xhr.status === 200){
+      console.log(xhr.responseText);
+    } else {
+      console.error(xhr.statusText);
+    }
+  }
+};
+
+xhr.onerror = function (e) {
+  console.error(xhr.statusText);
+};
+
+// open方式用于指定HTTP动词、请求的网址、是否异步
+xhr.open('GET', '/endpoint', true);
+
+// 发送HTTP请求
+xhr.send(null);
+
+XMLHttpRequest实例的属性
+readyState
+readyState是一个只读属性, 表示XMLHttpRequest对象请求当前所处的状态. 
+它的值如下:
+0，对应常量UNSENT，表示XMLHttpRequest实例已经生成，但是open()方法还没有被调用。
+1，对应常量OPENED，表示send()方法还没有被调用，仍然可以使用setRequestHeader()，设定HTTP请求的头信息。
+2，对应常量HEADERS_RECEIVED，表示send()方法已经执行，并且头信息和状态码已经收到。
+3，对应常量LOADING，表示正在接收服务器传来的body部分的数据，如果responseType属性是text或者空字符串，responseText就会包含已经收到的部分信息。
+4，对应常量DONE，表示服务器数据已经完全接收，或者本次接收已经失败了。
+
+每当请求状态发生改变, readyState属性的值就会改变. 每一次变化都会触发readystatechange事件
+
+onreadystatechange
+这个属性指向回调函数, 当发生readystatechange事件时, 就会执行这个回调函数, 其内部的readyState值也变化
+若果使用abort()方法终止XMLHttpRequest请求, onreadystatechange的回调函数也会被调用
+
+response
+response属性也是只读属性, 它返回接收到的数据体(body部分), 其类型由XMLHttpRequest.responseType属性决定
+若请求不成功或数据不完整则response为null
+
+responseType
+responseType指定服务器返回的数据类型.它的值有:
+”“：字符串（默认值）
+“arraybuffer”：ArrayBuffer对象, 按照数组的方式处理二进制数据
+“blob”：Blob对象, 适合读取二进制文件, 如图片
+“document”：Document对象, 适合返回XML文档
+“json”：JSON对象, 支持JSON的浏览器自动对返回的数据调用JSON.parse()方法. 此时XMLHttpRequest.response属性的值为JSON对象
+“text”：字符串, 适合大多数情况
+
+responseText
+responseText属性返回服务器接收到的字符串. 若请求未成功或数据不完整则返回null
+如果服务器返回JSON的数据格式, 则可以使用responseText属性
+var data = ajax.responseText;
+data = JSON.parse(data);
+
+responseXML
+responseXML属性返回从服务器接收到的Document对象. 其返回的数据会被直接解析为DOM对象
+如果本次请求未成功, 数据不完整, 不能解析为XML或HTML, 该属性等于null
+
+status
+status属性表示本次请求得到的http状态码. 常见的状态码如下:
+200, OK，访问正常
+301, Moved Permanently，永久移动
+302, Move temporarily，暂时移动
+304, Not Modified，未修改
+307, Temporary Redirect，暂时重定向
+401, Unauthorized，未授权
+403, Forbidden，禁止访问
+404, Not Found，未发现指定网址
+500, Internal Server Error，服务器发生错误
+
+statusText
+这个属性返回字符串,表示服务器发送的状态提示, 例如:"200 OK"
+
+timeout
+timeout值为一个整数代表毫秒, 表示请求时间的最长限度. 当超过这个时间会自动终止. 为0表示没有时间限制
+
+事件监听接口
+XMLHttpRequest第一版只有onreadystatechange事件有回调函数, 第二版增加了其他事件的回调函数:
+onloadstart 请求发出
+onprogress 正在发送和加载数据
+onabort 请求被中止，比如用户调用了abort()方法
+onerror 请求失败
+onload 请求成功完成
+ontimeout 用户指定的时限到期，请求还未完成
+onloadend 请求完成，不管成果或失败
+当发生网络错误时, onerror事件无法获取报错信息, 只显示报错
+
+withCredentials
+withCredentials属性是一个布尔值，表示跨域请求时，用户信息（比如Cookie和认证的HTTP头信息）是否会包含在请求之中，默认为false.
+服务器必须显式的返回Access-Control-Allow-Credentials头信息这个属性才有效
+
+XMLHttpRequest实例的方法
+abort()
+abort()方法阻止已经发出的http请求
+
+getAllResponseHeaders()
+getAllResponseHeaders方法返回服务器发来的所有HTTP头信息。格式为字符串，每个头信息之间使用CRLF分隔，如果没有受到服务器回应，该属性返回null。
+
+getResponseHeader()
+getResponseHeader方法返回HTTP头信息指定字段的值，如果还没有收到服务器回应或者指定字段不存在，则该属性为null。
+如果有多个字段同名, 则它们的值会被连接为一个字符串, 每个字段之间使用逗号和空格分隔
+
+open()
+XMLHttpRequest对象的open方法用于指定http请求的参数, 它可以接收5个参数
+XMLHttpRequest.open(method, url, async, user, password)
+method：表示HTTP动词，比如“GET”、“POST”、“PUT”和“DELETE”。
+url: 表示请求发送的网址。
+async: 格式为布尔值，默认为true，表示请求是否为异步。如果设为false，则send()方法只有等到收到服务器返回的结果，才会有返回值。
+user：表示用于认证的用户名，默认为空字符串。
+password：表示用于认证的密码，默认为空字符串。
+若对使用过open方法的请求再次使用open方法, 会终止请求,等同于调用abort()
+
+send()
+send()方法用于发送http请求. send方法的参数为要发送的数据.
+若其不带参数则http只包含头信息,即URL, 如GET请求. 带参数则表示含有具体数据的信息, 如POST请求
+send的参数数据类型可以是ArrayBufferView, Blob, Document, String, FormData等.
+
+setRequestHeader() 
+setRequestHeader方法用于设置HTTP头信息。该方法必须在open()之后、send()之前调用。如果该方法多次调用，设定同一个字段，则每一次调用的值会被合并成一个单一的值发送
+
+overrideMimeType()
+该方法用来指定服务器返回数据的MIME类型。该方法必须在send()之前调用。
+
+XMLHttpRequest实例的事件
+readystatechange
+每次readyState的值改变就会触发readystatechange事件
+
+progress事件
+上床文件时, XMLHTTPRequest对象的upload属性有一个progress事件, 它会不断的返回上传的进度
+
+load, error, abort事件
+load表示服务器传来的数据接受完毕
+error事件表示请求出错
+abort事件表示请求被中断
+
+loadend事件
+abort、load和error这三个事件，会伴随一个loadend事件，表示请求结束，但是这个事件并不知道前面的事件是否成功.
+

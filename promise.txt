@@ -1,0 +1,30 @@
+
+
+promise有三种states(状态):
+异步操作未完成（pending）
+异步操作成功（fulfilled）
+异步操作失败（rejected）
+我们通常将fulfilled和rejected称为setled, 这不是一个状态而是为了语法上的方便这么说的.
+promise有两种fates:
+resolved
+unresolved
+具体: https://github.com/domenic/promises-unwrapping/blob/master/docs/states-and-fates.md
+
+三种states的变化途径有两种:
+pending->fulfilled
+pending->rejected
+一旦states发生变化, 那么就不会有新的states变化了.
+
+
+Promise构造函数接受一个函数作为参数，该函数的两个参数分别是resolve和reject。它们是两个函数，由 JavaScript 引擎提供，不用自己实现
+
+
+promise只返回两种结果:
+异步操作成功, 调用resolve(value)方法返回异步操作结果, 作为参数(value)传递出去, state变为fulfilled
+失败, 调用reject(error)返回操作报出的错误(error), 作为参数传递出去, state变为rejected
+
+promise.prototype.then()
+用于添加回调函数, 它接收两个回调函数作为参数.返回一个promise对象
+若前一个异步操作成功, 则执行第一个回调函数. 若前一个异步操作失败, 则执行第二个回调函数.
+只要前一个promise返回的是resolve()那么then就执行第一个回调函数/
+只要前一个promise返回的是reject()那么then就执行第二个回调函数

@@ -1,0 +1,37 @@
+MutationOberver用来监视DOM的变动. 它是异步触发, 即它会等到当前所有的DOM操作结束才触发
+它有以下特点:
+异步触发方式
+将DOM的变动记录封装成数组
+可以观察DOM的所有变动, 也可以指定某类型的变动.
+
+构造函数
+使用构造函数MutationObserver()函数构造一个观察器实例, 该函数接受一个回调函数作为参数.
+回调函数接受两个参数, 第一个为变动数组, 第二个为观察器实例
+
+方法
+oberve()用于启动监听, 他接受两个参数,第一个参数为要观察的DOM节点, 第二个参数为一个配置对象options.
+对于options, 有下属性可以配置:
+childList：子节点的变动。
+attributes：属性的变动。
+characterData：节点内容或节点文本的变动。
+subtree：所有后代节点的变动。
+attributeOldValue：布尔值，表示观察attributes变动时，是否需要记录变动前的属性值。
+characterDataOldValue：布尔值，表示观察characterData变动时，是否需要记录变动前的值。
+attributeFilter：数组，表示需要观察的特定属性（比如['class','src']）
+前四个可以指定DOM的变动类型
+
+disconnect(), takeRecords()
+disconnect()方法用于停止观察器观察.不在监听DOM反生的变动
+takeRecords()方法用于清除变动记录,不在处理未处理的变动, 该方法返回变动记录的数组.
+
+MutationRecord对象
+DOM每次变化都会生成一条变动记录, 这个一条记录是MutationRecord的实例, 它包含了变动的所有信息. 
+MutationRecord对象包含如下属性:
+type：观察的变动类型（attribute、characterData或者childList）。
+target：发生变动的DOM节点。
+addedNodes：新增的DOM节点。
+removedNodes：删除的DOM节点。
+previousSibling：前一个同级节点，如果没有则返回null。
+nextSibling：下一个同级节点，如果没有则返回null。
+attributeName：发生变动的属性。如果设置了attributeFilter，则只返回预先指定的属性。
+oldValue：变动前的值。这个属性只对attribute和characterData变动有效，如果发生childList变动，则返回null

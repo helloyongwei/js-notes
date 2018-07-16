@@ -1,0 +1,42 @@
+Element.attributes属性
+元素对象的attributes属性返回一个类数组的动态对象， 元素的所有**属性节点对象**都是其成员。
+我们可以通过下面的三种d方法引用属性节点：
+// <body id="myBody">
+document.body.attributes[0]
+document.body.attributes.id
+document.body.attributes['ID']
+//注意它们返回的属性节点对象， 不是属性值
+
+对于属性节点， 我们可以通过name和value属性获取属性名和属性值， 也可以使用nodeName， 和nodeValue属性, 它们的返回值都是字符串
+// <body id="myBody">
+var body = document.body.attributes[0]
+body.attributes[0].name	//"id"
+body.attributes[0].nodeName//"id"
+
+body.attributes[0].value//"myBody"
+body.attributes[0].nodeValue//"myBody"
+
+元素的标准属性
+html元素的标准属性会自动成为元素节点对象的属性。 这些属性都是可写的。但是这些属性无法删除， 即delete对其无效
+
+属性操作的标准方法
+元素节点有四个方法来操作属性
+getAttribute(name): 获取属性名为name的属性值， 不存在则返回null
+setAttribute（name, value):新增属性， 设置属性name的值为value， 若属性已存在则编辑已存在属性。
+hasAttribute（name): 判断元素是否有name属性， 有则返回true， 无则返回false
+removeAttribute(name):删除属性名为name的属性
+
+
+dataset属性
+对于自定义属性我们可以使用data-前缀的方法来表示
+<div id="mydiv" data-foo="bar">
+注意：data-后面的属性名有限制，只能包含字母、数字、连词线（-）、点（.）、冒号（:）和下划线（_)。而且，属性名不应该使用A到Z的大写字母，比如不能有data-helloWorld这样的属性名，而要写成data-hello-world。
+
+虽然我们也可以通过getAttribute()的方式获取自定义属性， 但是这样会使html元素不符合标准。
+我们可以使用dataset属性来读取
+var div = document.getElementById('mydiv');
+div.dataset.foo // bar
+div.dataset.foo = 'baz'
+转成dataset的键名时，连词线后面如果跟着一个小写字母，那么连词线会被移除，该小写字母转为大写字母，其他字符不变。反过来，dataset的键名转成属性名时，所有大写字母都会被转成连词线+该字母的小写形式，其他字符不变。比如，dataset.helloWorld会转成data-hello-world。
+删除自定义属性可以直接使用delete命令
+

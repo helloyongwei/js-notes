@@ -1,0 +1,73 @@
+概述
+浏览器有一个history对象用于保存浏览历史. history对象也是window对象的属性
+window.history === history  //true
+
+history.length属性保存浏览历史的记录数.
+它还有一些方法可以在浏览历史之间移动.
+back(): 返回到上一个页面. 相当于浏览器的后退
+forward(): 前进到前一个页面, 相当于浏览器的前进键
+go(INT_value): 移动到INT_value指定的页面. INT_value是整数. 比如go(1)相当于forward()，go(-1)相当于back(). go(0)相当于刷新页面
+
+history.pushState()
+这个方法用来向浏览历史中添加记录.它接收三个参数:
+state：一个与指定网址相关的状态对象，popstate事件触发时，该对象会传入回调函数。如果不需要这个对象，此处可以填null。
+title：新页面的标题，但是所有浏览器目前都忽略这个值，因此这里可以填null。
+url：新的网址，必须与当前页面处在同一个域。浏览器的地址栏将显示这个网址
+
+pushState不会触发页面刷新, 他只会导致history对象发生变化, 在地址栏可以看到这种变化.若为其设置了一个新的跨域网址则会报错.
+
+
+history.replaceState()
+这个方法的参数和pushState方法的参数一样, 不过这个方法是用于修改浏览历史中的记录
+假定当前网页是example.com/example.html
+history.pushState({page: 1}, 'title 1', '?page=1');
+history.pushState({page: 2}, 'title 2', '?page=2');
+history.replaceState({page: 3}, 'title 3', '?page=3');
+
+history.back()
+// url显示为http://example.com/example.html?page=1
+
+history.back()
+// url显示为http://example.com/example.html
+
+history.go(2)
+// url显示为http://example.com/example.html?page=3
+
+history.state属性
+这个属性返回当前页面的state对象
+
+popstate事件
+每当同一个文档的浏览历史(history对象)出现变化时, 就会触发popstate事件
+只有当用户点击浏览器的倒退和前进按钮或者使用JavaScript调用back, forward, go方法时才会触发.
+popstate事件只针对同一个文档, 若浏览器历史切换, 导致加载不同的文档, 该事件也不会触发.
+
+URLSearchParams API
+这个API处理URL中的查询字符串. 他有一下方法:
+has()：返回一个布尔值，表示是否具有某个参数
+get()：返回指定参数的第一个值
+getAll()：返回一个数组，成员是指定参数的所有值
+set()：设置指定参数
+delete()：删除指定参数
+append()：在查询字符串之中，追加一个键值对
+toString()：返回整个查询字符串
+例如:
+var paramsString = 'q=URLUtils.searchParams&topic=api';
+var searchParams = new URLSearchParams(paramsString);
+
+searchParams.has('topic') // true
+searchParams.get('topic') // "api"
+searchParams.getAll('topic') // ["api"]
+
+若想遍历查询字符串的所有参数, 我们可以使用下面的三个方法:
+keys()：遍历所有参数名
+values()：遍历所有参数值
+entries()：遍历所有参数的键值对
+这三个方法返回的是Iterator对象
+例如:
+var searchParams = new URLSearchParams('key1=value1&key2=value2');
+
+for (var key of searchParams.keys()) {
+  console.log(key);
+}
+// key1
+// key2

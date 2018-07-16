@@ -1,0 +1,26 @@
+概述
+浏览器除了cookie能够存储数据外, 有提供了Storage类型的存储机制
+Storage有两类, sessionStorage存储和localStorage存储. 
+
+操作方法
+存入/读取数据
+sessionStorage和localStorage保存的数据都是键值对.
+serItem(key, value)接收两个参数, key为键名, value为要保存的数据
+getItem(key)返回键名为key的数据
+
+清楚数据
+removeItem(key)清除键名key对应的数据
+clear()清除保存的所有数据
+
+遍历操作
+sessionStorage和localStorage对象有length属性返回数据的个数
+可以使用key()方法遍历所有的键, 这个方法获得相应位置的键值
+
+storage事件
+当浏览器中存储的数据发生变化时, 我们就会触发storage事件, 我们可以为这个事件指定回调函数. 回调函数接收一个event事件对象作为参数. 这个事件对象中有以下属性会用到:
+key, 保存着键名
+oldValue：更新前的值。如果该键为新增加，则这个属性为null。
+newValue：更新后的值。如果该键被删除，则这个属性为null。
+url：原始触发storage事件的那个网页的网址。
+
+storage事件不在当前页面触发, 它会在浏览器打开的同一域名下的其他页面触发.

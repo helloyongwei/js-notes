@@ -1,0 +1,19 @@
+rem保存的是html元素的font-size值. 可以用来做移动端适配
+
+rem的基准值计算:
+rem = window.innerWidth/10
+注意: 对于border等对可直接设置为px, 不用rem
+
+设置html的font-size:
+1. 使用媒体查询@media
+2. 使用JavaScript
+document.addEventListener('DOMContentLoaded', function(e) {
+	document.getElementsByTagName('html')[0].style.fontSize = window.innerWidth / 10 + 'px';
+}, false);
+3.对于sass可以使用函数
+@function px($px) {
+@return $px/$designWidth*10 + rem;
+}
+
+em为自己的font-size
+

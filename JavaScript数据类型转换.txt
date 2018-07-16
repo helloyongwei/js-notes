@@ -1,0 +1,43 @@
+强制转换
+Number(), String(), Boolean()
+Number()方法的参数是原始类型的值时
+参数为数值则不变
+若是字符串，如果可以解析位数值则解析， 不能则位NaN
+空字符串‘’转为0
+true转为1， false转为0
+undefined转为NaN
+null转为0
+Number()方法的参数是对象时, 返回NaN, 除非是包含单个数值的数组
+具体规则
+调用valueOf, 若返回原始类型值则对该值调用Number()
+若valueOf返回对象, 则改为调用toString()方法
+若toString()方法返回原始类型值, 则调用Number()
+若toString()方法返回对象, 则报错
+
+String()可以将任意类型的值转为字符串
+数值，转为相应的字符串
+字符串， 不变
+true转为”true“， false转为”false“
+undefined转为”undefined“
+null转为”null“
+对象， 返回字符串”[object Object]"
+若为数组， 则返回数组的字符串形式
+调用toString()方法， 若返回原始类型值则对该值使用String()
+若返回对象， 则调用valueOf()方法
+若valueOf()方法返回原始类型值， 则对该值返回String()函数
+若调用valueOf()方法返回对象， 则报错
+
+Boolean()可以将false， undefined， null，0， NaN， ‘’（空字符串）转为false， 其余转为true
+
+
+自动转换
+123+'abc' 返回‘123abc'
+if('abc') ‘abc’隐式转为true
++{a:b}返回NaN
+-[1,2]返回NaN
+自动转换为布尔值：JavaScript遇到预期为布尔值的地方会将非布尔值自动转为布尔值， 内部调用Boolean()
+自动转换为字符串：JavaScript遇到预期为字符串的地方会将非布尔值自动转为字符串
+先将复合类型值转为原始类型， 再转为字符串（调用String())
+自动转换为数值：JavaScript遇到预期为数值的地方会将非布尔值自动转为数值， 内部调用Number()
+注意：Number（null）为0， Number（undefined）为NaN
+

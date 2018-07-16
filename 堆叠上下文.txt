@@ -1,0 +1,88 @@
+background-color: black;
+border: 1px solid rgba(255, 0, 0, 0.3)
+将border设为半透明, 并给一个背景, 可以看到background在border下面
+---background, border
+
+text-indent: -20px;
+将文字移动到border区域, 可以看到文字在border上方.
+---border, 文字
+
+.child.div {
+background-color: purple;
+margin-top: -10px;
+margin-left: -10px;
+}
+给子元素div设置background-color, 并将其移动到与内容重合的区域. 会发现该内容在上面, 在父级div上方
+则div子元素在文字下方, 在border上方
+---border, div, 文字
+
+.child.float {
+background-color: purple;
+float: left;
+}
+.parent {
+text-indent: -10px;
+}
+将文字移动到浮动元素区域, 发现文字正在浮动元素上方. 
+则浮动也在文字元素下方
+---float, 文字 
+
+.child.float {
+background-color: purple;
+float: left;
+}
+.child.div {
+background-color: black;
+}
+将浮动元素和div元素相比, 发现浮动元素在div元素上方.
+---div, float
+
+.child.float {
+background-color: purple;
+float: left;
+}
+.child.relative {
+background-color: black;
+positon: relative;
+}
+发现relative在float的上方.
+---float, relative
+.parent {
+text-indent: -10px;
+}
+.child.relative {
+background-color: black;
+positon: relative;
+}
+将文字移动到relative区域, relative在文字上方
+---float, 文字, relative
+
+.child.relative1 {
+background-color: black;
+positon: relative;
+z-index: 0或auto;
+}
+.child.relative2 {
+background-color: black;
+positon: relative;
+z-index: 1;
+}
+relative2覆盖relative1
+
+.child.relative1 {
+background-color: black;
+positon: relative;
+z-index: 4;
+}
+.child.relative2 {
+background-color: black;
+positon: relative;
+z-index: 1;
+}
+relative1覆盖relative2
+可以讲relative位置认为是z-index为0的位置
+
+
+两个元素position都为absolute或relative时, z-index大的在上面
+没有z-index则谁在后面谁就在上面
+

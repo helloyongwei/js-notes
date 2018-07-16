@@ -1,0 +1,55 @@
+构造函数
+function Person(options) {
+	this.name = options.name
+	this.age = options.age
+	this.say = {
+		console.log('我是人类')	
+	}
+}
+
+var person ={name: 'yong', age: 20}
+var ps = new Person(person)
+
+ps.name
+ps.age
+
+缺点:
+var person1 ={name: 'yong', age: 20}
+var person2 ={name: 'yong2', age: 21}
+
+var ps1 = new Person(person1)
+var ps2 = new Person(person2)
+
+ps1.say === ps2.say	//false
+
+
+
+原型:
+Person.prototype.say = function() {
+	console.log('我是人类')
+}
+
+ps1.say === ps2.say	//true. 实例对象ps1,ps2通过原型链查找到say函数
+
+Person.prototype === ps1.__proto__	//true
+Person.prototype === ps2.__proto__	//true
+
+
+原型链:
+所有对象那个都有原型, 那么每个对象不停的向上回溯, 都会上溯到Object.prototype, 即Object构造函数的prototype属性.
+而Object.prototype的原型是null
+Object.prototype.__proto__ === null
+某一原型的实例对象可以通过原型链获取原型上的属性或者函数, 就如上例一样:
+ps1.say === ps2.say	//true
+ps1.say === Person.prototype.say	//true
+
+constructor:
+每个原型都有一个constructor属性, 这个属性指向构造函数:
+Person.prototype.constructor === Person	//true
+
+对于Person.prototype生成的实例对象, 可以通过原型链取得constructor属性:
+ps1.__proto__.constructor === ps1.constructor //true
+ps1.__proto__.constructor === Person	//true
+ps1.constructor === Person	//true
+
+

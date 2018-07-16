@@ -1,0 +1,136 @@
+概述
+JavaScript的所有其他对象都继承自Object对象
+Object对象自身的方法
+Object实例的方法, 这些方法继承自Object.prototype
+
+Object()
+使用Object()可以将任意值转换为对象.
+若参数为空或undefined或null则返回空对象
+若参数是原始类型的值, 则返回对应的包装对象的实例
+若参数是对象, 则返回该对象不转换
+
+可以用instanceOf来确定一个值是否是对象, 若是则返回true, 反之返回false
+
+Object()还用来做构造函数
+
+
+Object()的静态方法
+
+Object.keys()和Object.getOwnPropertyNames()方法都用来遍历对象的属性, 都返回一个数组,不同的时Object.keys()只返回可枚举的属性, Object.getOwnPropertyNames()可以返回不可枚举的属性
+var a = ['Hello', 'World'];
+
+Object.keys(a) // ["0", "1"]
+Object.getOwnPropertyNames(a) // ["0", "1", "length"]
+
+我们可以用下面的方法获取length属性
+var obj = {
+  p1: 123,
+  p2: 456
+};
+
+Object.keys(obj).length // 2
+Object.getOwnPropertyNames(obj).length // 2
+
+Object还有很多静态方法如下, 这里不一一介绍了
+对象属性模型的相关方法
+Object.getOwnPropertyDescriptor()：获取某个属性的描述对象。
+Object.defineProperty()：通过描述对象，定义某个属性。
+Object.defineProperties()：通过描述对象，定义多个属性。
+
+控制对象状态的方法
+Object.preventExtensions()：防止对象扩展。
+Object.isExtensible()：判断对象是否可扩展。
+Object.seal()：禁止对象配置。
+Object.isSealed()：判断一个对象是否可配置。
+Object.freeze()：冻结一个对象。
+Object.isFrozen()：判断一个对象是否被冻结。
+
+原型链相关方法
+Object.create()：该方法可以指定原型对象和属性，返回一个新的对象。
+Object.getPrototypeOf()：获取对象的Prototype对象。
+
+Object的实例方法
+常用到的方法有6个
+Object.prototype.valueOf()：返回当前对象对应的值。
+Object.prototype.toString()：返回当前对象对应的字符串形式。
+Object.prototype.toLocaleString()：返回当前对象对应的本地字符串形式。
+Object.prototype.hasOwnProperty()：判断某个属性是否为当前对象自身的属性，还是继承自原型对象的属性。
+Object.prototype.isPrototypeOf()：判断当前对象是否为另一个对象的原型。
+Object.prototype.propertyIsEnumerable()：判断某个属性是否可枚举。
+
+介绍前4个
+
+Object.prototype.valueOf()
+这个方法返回对象的值, 默认情况下返回对象本身
+var obj =  {}
+obj.valueOf() === obj //true
+在自动类型转换时调用这个方法
+var obj = {}
+1+obj	//"1[object Object]"
+
+当更改valueOf方法时
+Object.prototype.valueOf = function() {return 1}
+var obj = {}
+1+obj	//2
+
+Object.prototype.toString()
+这个方法对Object类型的数据常返回"[object Object]", 可以自定义这个方法
+var o1 = new Object();
+o1.toString() // "[object Object]"
+
+var obj = new Object();
+
+obj.toString = function () {
+  return 'hello';
+};
+obj + ' ' + 'world' // "hello world"
+对数组, 字符串, 函数, Date对象返回其自定义的方法.
+[1, 2, 3].toString() // "1,2,3"
+
+'123'.toString() // "123"
+
+(function () {
+  return 123;
+}).toString()
+// "function () {
+//   return 123;
+// }"
+
+(new Date()).toString()
+// "Tue May 10 2016 09:11:31 GMT+0800 (CST)"
+
+可以结合call()方法, 在任意值上调用这个方法用于判断这个值的数据类型
+Object.prototype.toString.call(value)
+数值：返回[object Number]。
+字符串：返回[object String]。
+布尔值：返回[object Boolean]。
+undefined：返回[object Undefined]。
+null：返回[object Null]。
+数组：返回[object Array]。
+arguments 对象：返回[object Arguments]。
+函数：返回[object Function]。
+Error 对象：返回[object Error]。
+Date 对象：返回[object Date]。
+RegExp 对象：返回[object RegExp]。
+其他对象：返回[object Object]。
+
+代码举例:
+Object.prototype.toString.call(2) // "[object Number]"
+Object.prototype.toString.call('') // "[object String]"
+Object.prototype.toString.call(true) // "[object Boolean]"
+
+
+
+Object.prototype.toLocaleString()和toString()方法返回结果相同, 主要用作借口让其他对象实现自己版本的toLocaleString()方法.目前有三个方法自定义了这个方法
+Array.prototype.toLocaleString()
+Number.prototype.toLocaleString()
+Date.prototype.toLocaleString()
+
+例如:
+var date = new Date();
+date.toString() // "Tue Jan 01 2018 12:01:33 GMT+0800 (CST)"
+date.toLocaleString() // "1/01/2018, 12:01:33 PM"
+toLocaleString的返回值还和用户设定的所在地域相关
+
+Object.prototype.hasOwnProperty()接收一个参数, 用于检测该参数是否是对象自身的属性(不包括继承的属性), 若是则返回true反之返回false
+

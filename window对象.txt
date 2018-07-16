@@ -1,0 +1,91 @@
+window对象时浏览器的全局对象, 它指向当前浏览器
+
+window对象的属性
+window.window指向其自身
+window.name表示浏览器当前窗口的名字, 我们也可以为当前窗口设置名字
+window.location返回location对象, 这个属性用于获取窗口的URL信息. 和document.location相等
+window.location === document.location//true
+window.closed表示窗口是否关闭, 它是一个布尔值. true表示关闭
+window.opener返回当前窗口的父窗口, 没有父窗口则返回null
+window.frames返回一个array-like对象, 其成员为该页面内的所有框架(frame和iframe)
+frames实际上是window的别名s, 因此也可用frames代替window
+window.screenX返回浏览器窗口左上角相对于屏幕左上角的水平距离,单位为px
+window.screenY返回浏览器窗口左上角相对于屏幕左上角的垂直距离,单位为px
+window.screen返回显示的信息, 它返回一个对象. 
+window.screen.height为设备高, window.screen.width为设备宽, 这两个属性通常表示设备的分辨率
+window.screen.colorDepth返回屏幕的颜色深度, 一般为16或24
+window.innerHeight返回当前窗口的可见部分的高度, 单位为px. 即视口的高度
+window.innerwidth返回当前窗口的可见部分的宽度, 单位为px. 即视口的宽度
+window.outerHeight返回浏览器窗口的高度
+window.outWidth返回浏览器窗口的宽度
+window.pageXOffset返回当前页面的水平滚动距离
+window.pageYOffset返回当前页面的垂直滚动距离
+
+window对象还有个navigator属性, 这个属性是一个对象
+
+navigator对象
+navigator对象也是window的一个属性, 这个属性包含了浏览其的相关信息
+navigator.userAgent返回浏览器的user-agent字符串, 表示浏览器的厂商和版本信息
+navigator.plugins表示浏览器安装的插件, 它是一个array-like对象
+navigator.platform返回用户的操作系统信息
+navigator.onLine返回布尔值, 表示用户是否在线, true表示在线, false表示离线
+navigator.geolocation返回Geolocation对象, 包含用户地理位置的信息
+navigator.JavaEnabled()表示浏览器能否运行java Applet小程序. true表示可以运行, 它是一个布尔值
+navigator.cookieEnabled也是布尔值, 表示浏览器能否存储Cookie
+
+window对象的方法
+window.moveTo(x, y)方法接收两个参数, 将浏览器窗口移动到屏幕的(x, y)位置, 单位为px.
+window.moveBy(x, y)方法将窗口移动到当前窗口的相对的位置(x, y)
+window.scrollTo(x, y)将网页滚动到指定位置, x,y是相对与整张网页的绝对坐标, 这个方法还可以用window.scroll(x, y)表示
+window.scrollBy(x, y)将网页移动指定的距离, x表示向右移动的距离, y表示向下移动的距离
+window.open()方法可以接收四个参数, 这个方法用于打开新的窗口并返回该窗口对象
+window.open(url, name, "key=value,key2=value2", true/false)
+第一个参数：字符串，表示新窗口的网址。如果省略，默认网址就是about:blank。
+第二个参数：字符串，表示新窗口的名字。如果该名字的窗口已经存在，则跳到该窗口，不再新建窗口。如果省略，就默认使用_blank，表示新建一个没有名字的窗口。
+第三个参数：字符串，内容为逗号分隔的键值对，表示新窗口的参数，比如有没有提示栏、工具条等等。如果省略，则默认打开一个完整UI的新窗口。
+第四个参数：布尔值，表示第一个参数指定的网址，是否应该替换history对象之中的当前网址记录，默认值为false. 显然，这个参数只有在第二个参数指向已经存在的窗口时，才有意义。
+注意不要把这个open方法和AJAX中的open方法搞混, AJAX中的open方法可以接收5个参数
+var xhr = new XMLHttpRequest()
+xhr.open(method, url, true/false, username, passwd)
+window.close通常用于关闭window.open方法新建的窗口
+window.print()用于打印, 它和浏览器菜单中的打印选项相同
+window.getComputedStyle()方法接收html元素作为参数, 返回这个元素的最终样式(计算后的样式)
+window.matchMedia()检查css的@media查询语句
+window.focus()方法会激活窗口, 并使其获得焦点
+window.getSelection()方法返回一个Selection对象, 表示用户选中的文本
+window.getSelection().toString()方法返回选中的文本
+
+对窗口操作
+窗口引用
+假设我们在一个网页中使用iframe或者frame标签, 那么在这个网页中就会有多个窗口
+window对象提供了window.top, window.parent, window.self三个属性表示顶层窗口, 父窗口和当前窗口. top, parent, self是对象, 也可以单独使用
+我们的a标签, form标签等有个target属性, 表示在哪一个窗口打开, 这个属性有三个属性值, 分别于top, parent, self对象对应, 分别是_top, _parent, _self属性值
+
+iframe标签
+这个标签可以在网页中嵌入一个窗口
+iframe标签遵守同源策略, 若父窗口和ifrmae来自不同域名则不能使用脚本直接通信, 要使用window.postMessage方法通信
+iframe嵌入窗口的window对象，有一个frameElement属性，返回它在父窗口中的DOM节点。对于那么非嵌入的窗口，该属性等于null
+
+事件
+当文档在浏览器中加载完毕时, 发生load事件, window.onload属性指定这个事件的回调函数
+
+当脚本发生错误时, 触发error事件, window.onerror属性指定这个事件的回调函数. 这个事件可以接收5个参数
+
+URL的编码/解码方法
+URL的合法字符有两类
+URL元字符：分号（;），逗号（’,’），斜杠（/），问号（?），冒号（:），at（@），&，等号（=），加号（+），美元符号（$），井号（#）
+语义字符：a-z，A-Z，0-9，连词号（-），下划线（_），点（.），感叹号（!），波浪线（~），星号（*），单引号（\），圆括号（()）
+除了上面两类字符, 其余字符都需要转义
+encodeURI()将元字符和语义字符之外的字符全部转义
+encodeURIComponent()将语义字符之外的字符全部转义
+decodeURI()用于还原encodeURL()方法转义
+decodeURIComponent()还原encodeURIComponent()方法的转义
+
+alert(), prompt(), confirm()
+这三个方法都用于弹出对话框. 但是使用场景不同
+alert()用于通知用户信息, 参数只能是字符串
+prompt()提示用户输入信息并获取用户输入的信息, 它有三种情况:
+用户输入信息，并点击“确定”，则用户输入的信息就是返回值。
+用户没有输入信息，直接点击“确定”，则输入框的默认值就是返回值。
+用户点击了“取消”（或者按了Esc按钮），则返回值是null
+confirm()方法常用来征询用户的意见

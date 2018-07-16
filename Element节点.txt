@@ -1,0 +1,89 @@
+Element.实例属性
+元素特性的相关属性
+Element.id 返回元素的id属性
+Element.tagName 返回元素的大写标签名, 其值与nodeName属性相等
+Element.dir 读写当前元素的文字方向.
+Element.accessKey 属性用于读写当前元素的快捷键
+Element.draggable 返回布尔值, 表示是否可以拖动, 可读写
+Element.lang 返回当前元素的语言设置, 可读写
+Element.tabIndex 属性返回一个整数
+Element.title 用于读写元素的title属性
+
+元素状态的相关属性
+Element.hidden 返回可读写的布尔值, 表示当前元素的hidden属性
+Element.contentEditable 可读写属性, 当元素设置了这个属性时, 使得元素内容可以编辑, 有三个值: true, false, inherit
+Element.isContentEditable 也表示元素内容是否可编辑, 和contentEditable的区别是这是一个只读属性
+
+Element.attributes返回一个类数组(array-like)对象, 其成员为当前元素的所有属性节点
+Element.className用于读写元素节点的class属性, 返回值为字符串
+Element.classList也用于读写元素节点的class属性, 和className的区别是, classList返回的是array-like对象. 
+classList有下面几个方法:
+add()：增加一个 class。
+remove()：移除一个 class。
+contains()：检查当前元素是否包含某个 class。
+toggle()：将某个 class 移入或移出当前元素, 这个方法可以有第二个参数，为布尔值。 true为添加属性， false为删除属性
+item()：返回指定索引位置的 class。
+toString()：将 class 的列表转为字符串
+Element.dataset属性用于读写自定义属性
+Element.innerHTML返回当前元素的所有子元素（不包括当前元素）。
+Element.outHTML返回当前元素及其子元素， 可读写
+Element.clientHeight 返回块级元素节点的高度， 单位为px. 对行内元素返回0
+Element.clientWidth 返回块级元素节点的宽度, 单位为px. 对行内元素返回0
+Element.clientLeft 返回元素左边框的宽度
+Element.clientTop返回元素上边框的宽度
+Element.scollHeight 返回当前元素的总高度, 包括不可见部分
+Element.scollWidth 返回当前元素的总宽度, 包括不可见部分
+Element.scrollLeft 返回当前元素的水平滚动条向右水平滚动的距离
+Element.scrollTop 返回当前元素的垂直滚动条向下滚动的距离
+Element.offsetParent 返回最靠近当前元素的并且css的position属性不等于static的上层元素
+Element.offsetLeft返回当前元素相对于offsetParent节点的水平位移
+Element.offsetTop返回当前元素相对于offsetParent节点的垂直位移
+Element.offsetHeight 返回元素的垂直高度, 包括pading, border和滚动条
+Element.offsetWidth 返回当前元素的水平宽度, 包括pading, border和滚动条
+Element.style 返回元素节点的行内样式
+Element.children 返回array-like对象, 成员为当前元素的所有子元素
+Element.childElementCount 返回当前元素节点的子元素节点个数, 其值也等于Element.children.length
+Element.firstElementChild 返回当前元素节点的第一个元素子节点
+Element.lastElementChild 返回最后一个元素子节点
+Element.nextElementSibling 返回当前元素节点的后一个同辈元素
+Element.previousElementSibliing 返回当前元素节点的前一个同辈元素
+
+实例方法
+Element.getAttribute()接收一个参数获取元素的属性
+Element.getAttributes()获取元素的所有属性
+Element.setAttribute()接收两个参数key和value设置元素的属性
+Element.hasAttribute()返回布尔值, 接收一个参数判断元素是否有指定的属性
+Element.hasAttributes() 返回布尔值, 判断元素是否有属性
+Element.removeAttribute() 删除元素的属性
+Element.querySelector() 接收css选择器作为参数, 返回第一个匹配的元素
+Element.querySelectorAll()接收css选择器作为参数, 返回匹配的所有元素
+Element.querySelector和Element.querySelectorAll先在全局范围搜索给定的选择器, 再过滤出满足当前元素的子元素
+Element.getElementsByClassName()方法接收一个参数value, 返回class属性值为value的元素. 此方法返回HTMLCollection实例, HTMLCollection是动态实例
+Element.getElementsByTagName()方法也接收一个参数并返回HTMLCollection实例, 其成员是满足参数的子节点
+Element.closest()接收一个css选择器作为参数, 返回匹配该选择器的,最接近当前节点的祖先节点(包括当前节点). 没有匹配的则返回null
+Element.matches()返回布尔值, 表示当前元素是否匹配给定的css选择器
+Element.addEventListener()：添加事件的回调函数
+Element.removeEventListener()：移除事件监听函数
+Element.dispatchEvent()：触发事件
+Element.scrollIntoView(true)滚动当前元素进入浏览器的可见区域, 且元素顶部与可见区域顶部对齐, 当接收false作为参数时, 元素底部与可见区域底部对齐
+Element.getBoundingClientRect() 返回一个对象. 基本包括盒子模型的所有信息. 常用的有:
+x：元素左上角相对于视口的横坐标
+y：元素左上角相对于视口的纵坐标
+height：元素高度
+width：元素宽度
+left：元素左上角相对于视口的横坐标，与x属性相等
+right：元素右边界相对于视口的横坐标（等于x + width）
+top：元素顶部相对于视口的纵坐标，与y属性相等
+bottom：元素底部相对于视口的纵坐标（等于y + height）
+getClientRects()返回array-like对象, 其属性有bottom, top, left, right, width和height属性
+Element.insertAdjacentElement(pos, elem)在pos位置前插入元素elem
+pos可以取值如下:
+beforebegin：当前元素之前
+afterbegin：当前元素内部的第一个子节点前面
+beforeend：当前元素内部的最后一个子节点后面
+afterend：当前元素之后
+Element.insertAdjacentHTML(pos, html)在pos位置插入包含HTML字符串
+Element.insertAdjacentText(pos, text)在pos位置插入text文本节点
+Element.remove()将当前节点从父节点中移除
+Element.focus()将焦点转移到指定元素上
+Element.click()方法模拟鼠标的点击事件

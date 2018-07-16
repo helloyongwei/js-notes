@@ -1,0 +1,23 @@
+
+字符串是不可变的,字符串中一个换行的两种表示
+
+转义字符中注意下面几个:
+\HHH, HHH为Unicode的码店
+\xHH, HH为Unicode的码店
+\uHHHH, HHHH为Unicode的码店
+
+'\a' 会忽略反斜杠
+
+字符串可以视为数组, 可以通过数组属性获取值, 但无法通过数组的属性更改任何值
+
+字符集
+JavaScript使用Unicode字符集, JavaScript引擎内部所有字符都使用Unicode表示
+但在解析代码时会将Unicode转换为字面形式
+JavaScript在内部以16位的UTF-16进行存储字符
+
+Base64转码
+Base64可以将任意值转换为0-9,a-z, A-Z,+,- 共64个字符(主要为了简化程序)
+btoa()将任意值转为Base64编码
+atob()将Base64编码转为原来的值
+
+

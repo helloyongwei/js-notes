@@ -1,0 +1,13 @@
+cookie 
+服务器端设置cookie并返回响应
+浏览器再次访问服务器时(访问同一域名下的页面)会在请求体中带上这个cookie
+服务器端根据需要读取请求体中的cookie, 或者重新设置cookie
+cookie有一个过期时间, 可以通过服务器端设置
+cookie在页面关闭时失效
+
+session
+服务器端通过sessionId的方式设置session, 并将sessionId通过cookie的方式传回客户端
+当客户端再次访问服务器时, 服务器读取sessionId对应的session并返回响应
+session保存在服务器端, 实质就是一块内存, 也可以叫做对象
+session也在页面关闭时失效
+
