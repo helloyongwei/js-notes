@@ -1,0 +1,137 @@
+使用canvas时必须先指定width和height作为绘图区域. 
+canvas的开闭标签之间的内容, 在浏览器不支持canvas标签时显示.
+
+getContext(contextType)用于获取上下文, contextType是上下文的类型, 值可以为"2d", "webgl"等 
+
+填充fillStyle: 指定填充样式
+描边strokeStyle: 指定图形的边样式
+属性值可以为: 字符串/渐变对象/模式对象.
+
+绘制矩形
+fillRect()绘制填充矩形
+strokeRect()绘制描边矩形
+clearRect()清除矩形区域
+这三个方法接受四个参数: 矩形的x, y坐标和矩形的width和height.
+
+lineWidth
+lineCap
+lineJoin
+
+绘制路径
+圆弧
+arc(x, y, radius, startAngle, endAngle, counterclockwise)
+arcTo(x1, y1, x2, y2, radius)
+线
+lineTo(x,y)
+移动
+moveTo(x, y)
+矩形
+rect(x, y, width, height)
+贝赛尔曲线
+quadraticCurveTo(cx, cy, x, y)
+bezierCurveTo(c1x, c1y, c2x, c2y, x, y)
+
+beginPath()
+closePath()
+stroke(), 用strokeStyle的值描边
+fill(), 用fillStyle的值填充
+clip, 裁剪区域
+isPointInPath(x, y)用于判断点(x, y)在路径关闭前是否在路径上.
+
+绘制文本
+fillText()用fillStyle绘制文本
+strokeText()用strokeStyle为文本描边
+这两个方法接收四个参数: 绘制的字符串, x和y坐标, 以及可选的最大像素宽度
+
+font表示文本样式, 大小及字体
+textAlign表示文本对齐方式. start/end/left/right/center, 和x坐标有关
+textBaseline表示文本的基线. top/hanging/middle/alphabetic/ideographic/bottom, 和y坐标有关
+direcion表示文本方向. ltr/rtl/inherit
+
+fillText()和strokeText()根据上面四个属性绘制文本
+measureText()
+
+变换
+rotate(angle): 围绕原点旋转angle弧度, 顺时针
+scale(scaleX, scaleY): 缩放图像, 在x方向乘以scaleX, 在y方向乘以scaleY. 默认值都为1.0
+translate(x, y): 将坐标原点移动到(x, y)处.
+transform(m1_1, m1_2, m2_1, m2_2, dx, dy): 当前变换矩阵参数乘以下面矩阵修改变换矩阵
+m1_1	m1_2	dx
+m2_1	m2_2	dy
+0	0 	1
+m1_1: 水平方向的缩放
+m1_2: 水平方向的倾斜偏移
+m2_1: 竖直方向的缩放
+m2_2: 竖直方向的倾斜偏移
+dx: 水平方向的移动
+dy: 数值方向的移动
+setTransform(m1_1, m1_2, m2_1, m2_2, dx, dy): 将变换矩阵重置为默认状态, 然后再调用transform()
+resetTransform(): 重置当前变换为单位矩阵
+
+save()将变换的当前设置保存在栈结构中
+restore()栈顶出栈, 返回栈顶的设置
+上面两个方法保存一下内容
+1. 当前的变换
+2. strokeStyle, fillStyle, globalAlpha, lineWidth, lineCap, lineJoin, miterLimit, shadowOffsetX, shadowOffsetY, shadowBlur, shadowColor, globalCompositeOperation 的值
+3, 当前的裁切路径
+
+绘制图像
+绘制图像要用到drawImage()方法, 这个方法的第一个参数可以是image对象或canvas元素或者是一个图像的URL等
+drawImage(image, x, y): 坐标(x,y)表示绘制图像的起点. 这种方法绘制的图像大小和原始图像大小一致
+drawImage(image, x, y, width, height): width和height用来缩放图像
+drawImage(image, x1, y1, w1, h1, x2, y2, w2, h2): 选中原始图像的某个区域进行绘制
+x1: 源图像的x坐标
+y1: 源图像的y坐标
+w1: 源图像的宽度
+h1: 源图像的高度
+x2: 目标图像的x坐标
+y2: 目标图像的y坐标
+w2: 目标图像的宽度
+h2: 目标图像的高度
+toDataURL(MIME): 到处创建的图像, MIME为图像的MIME类型格式, 可以为image/png, image/jpg等
+要注意的是:
+1. 调用toDataURL时, 图像不能来自其他域.
+2. toDataURL是Canvas对象的方法, 不是上下文对象的方法.
+
+阴影
+shadowColor: 用CSS颜色格式表示阴影颜色, 默认为黑色
+shadowOffsetX: 形状或路径x轴方向的阴影偏移量, 默认为0
+shadowOffsetY: 形状或路径y轴方向的阴影偏移量, 默认为0
+shadowBlur: 模糊的像素数, 默认为0(不模糊)
+
+渐变
+渐变由CanvasGradient实例表示.
+createLinearGradient(x1, y1, x2, y2): 绘制线性渐变. 从起点(x1, y1)到终点(x2, y2). 上下文调用这个方法后返回CanvasGradient实例
+createRadialGradient(x1, y1, r1, x2, y2, r2): 绘制放射渐变. 前三个参数为第一个园的圆心和半径,后三个参数为第二个园的圆心和半径
+
+获取图像数据
+getImgeData(x, y, width, height): 用于获取原始图像数据. (x, y)为数据的起始点, width为该区域的宽度, height为高度, 单位是px. 这个方法返回imageData对象的实例. 
+imageData实例有三个属性:width, height和data
+data是一个数组, 保存这个每个像素的数据. 每个像素数据用4个数组项来保存, 分别为红, 绿, 蓝和透明值. 
+如, 获取第一个像素的数据.
+data = imageData.data
+red = data[0]
+green = data[1]
+blue = data[2]
+alpha = data[3]
+可以推出第n个像素的数据为:
+red = data[4n-4]
+green = data[4n-3]
+blue = data[4n-2]
+alpha = data[4n-1]
+
+合成
+globalAlpha: 值介于0(默认值)和1之间, 表示透明度.
+globalCompositionOperation: 表示后绘制图形和先绘制的图形如何结合. 有以下值选择.
+source-over: 默认值, 后绘制的图形位于先绘制的图形上方
+source-in: 后绘制的图形与先绘制的图形重叠的部分可见, 其他部分完全透明
+source-out: 后绘制的图形与先绘制的图形不重叠部分可见, 先绘制的图形完全透明
+source-atop: 后绘制的图形与先绘制的图形重叠部分课件, 先绘制的图形不受影响
+destination-over: 后绘制的图形位于先绘制的图形的下方, 只有之前透明像素下的部分才可见
+destination-in: 后绘制的图形位于先绘制的图形下方, 两者不重叠部分完全透明
+destination-out: 后绘制的图形擦除与先绘制的图形的重叠的部分
+destination-atop: 后绘制的图形位于先绘制的图形下方, 在两者不重叠的地方, 先绘制的图形会变透明
+lighter: 后绘制的图形与先绘制的图形重叠部分的值相加, 使该部分变亮.
+copy: 后绘制的图形完全替代与之重叠的先绘制图形
+xor: 后绘制的图形与先绘制的图形重叠的部分执行"异或"操作
+
